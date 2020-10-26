@@ -1,5 +1,7 @@
 # Distributed, multi-region, jenkins deployment using Terraform and Ansible
 
+![logo](diagram.png)
+
 AWS services used:
 
 * S3
