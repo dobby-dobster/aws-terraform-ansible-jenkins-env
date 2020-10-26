@@ -69,3 +69,10 @@ Once the deployment has completed, a multi-region Jenkins deployment will exist 
 You will be able to access jenkins via https://jenkins. + your-domain
 
 Login credentials are admin/password
+
+## Cleanup
+
+You can destroy the environment with `terraform destroy`.
+
+This will remove all resources apart from the S3 bucket. To destroy the S3 bucket you can use the aws cli command `aws s3 rb s3://bucket-name --force`  
+
