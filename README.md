@@ -66,4 +66,4 @@ If you are happy with the output, then `terraform apply`. Type 'yes' when prompt
 
 Once the deployment has completed, a multi-region Jenkins deployment will exist - master in us-east-1 and a worker node in us-west-2.
 
-You will be able to access jenkins via https://jenkins.<your-domiain>
+You will be able to access jenkins via https://jenkins. + your-domiain
