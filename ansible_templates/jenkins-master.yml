@@ -53,6 +53,11 @@
             remote_src: yes
             src: /tmp/jenkins/jenkins
             dest: /var/lib
+         
+        - name: Install terraform jenkinsplugin
+          copy:
+            src: plugins/terraform.xml
+            dest: /var/lib/jenkins/org.jenkinsci.plugins.terraform.TerraformBuildWrapper.xml
             
         - name: Create directories ready for jenkins jobs
           file:
