@@ -41,7 +41,7 @@
         stage(&apos;Generate Zip&apos;){
             steps{
                 zip zipFile: &apos;lambda_function_payload.zip&apos;, dir: &apos;python/&apos;, archive: true
-                
+                sh label: &apos;&apos;, script: &apos;mv lambda_function_payload terraform/&apos;
             }
         }
         stage(&apos;Terraform Init&apos;){
@@ -51,10 +51,10 @@
             }
         }
         }
-        stage(&apos;Terraform Plan&apos;){
+        stage(&apos;Terraform Apply&apos;){
             steps{
                 dir(&apos;terraform&apos;) {
-                sh label: &apos;&apos;, script: &apos;terraform plan&apos;
+                sh label: &apos;&apos;, script: &apos;terraform apply -auto-approve&apos;
             }
         }
         }
