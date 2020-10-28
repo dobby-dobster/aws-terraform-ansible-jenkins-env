@@ -34,6 +34,7 @@ resource "aws_instance" "jenkins-master" {
   associate_public_ip_address = true
   vpc_security_group_ids      = [aws_security_group.jenkins-sg.id]
   subnet_id                   = aws_subnet.subnet_1.id
+  iam_instance_profile        = aws_iam_instance_profile.jenkins_profile.name
   provisioner "local-exec" {
     when    = destroy
     command = "rm -f ansible_templates/inventory"
@@ -64,6 +65,7 @@ resource "aws_instance" "jenkins-worker" {
   associate_public_ip_address = true
   vpc_security_group_ids      = [aws_security_group.jenkins-sg-worker.id]
   subnet_id                   = aws_subnet.subnet_1_worker.id
+  iam_instance_profile        = aws_iam_instance_profile.jenkins_profile.name
   provisioner "local-exec" {
     command = <<EOD
 cat <<EOF >> ansible_templates/inventory_worker
