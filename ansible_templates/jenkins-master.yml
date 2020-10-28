@@ -54,10 +54,15 @@
             src: /tmp/jenkins/jenkins
             dest: /var/lib
          
-        - name: Install terraform jenkinsplugin
+        - name: Install terraform build
           copy:
             src: plugins/terraform.xml
             dest: /var/lib/jenkins/org.jenkinsci.plugins.terraform.TerraformBuildWrapper.xml
+            
+        - name: Install terraform jenkinsplugin
+          copy:
+            src: plugins/terraform.jpi
+            dest: /var/lib/jenkins/plugins/terraform.jpi
             
         - name: Create directories ready for jenkins jobs
           file:
