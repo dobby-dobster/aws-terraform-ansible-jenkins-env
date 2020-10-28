@@ -22,32 +22,51 @@
     }
     stages {
         stage(&apos;Git Clone python-hello-world-lambda&apos;){
+            
             steps{
+                dir(&apos;python&apos;) {
                 git branch: &apos;main&apos;, changelog: false, poll: false, url: &apos;https://github.com/dobby-dobster/python-hello-world-lambda.git&apos;
             }
         }
+        }
+        
         stage(&apos;Git Clone aws-terraform-lambda&apos;){
+            
             steps{
+                dir(&apos;terraform&apos;) {
                 git branch: &apos;main&apos;, changelog: false, poll: false, url: &apos;https://github.com/dobby-dobster/aws-terraform-lambda.git&apos;
             }
         }
+        }
         stage(&apos;Generate Zip&apos;){
             steps{
-                zip zipFile hello-world.py lambda_function_payload.zip
+                zip zipFile: &apos;lambda_function_payload.zip&apos;, dir: &apos;python/&apos;, archive: true
+                
             }
         }
         stage(&apos;Terraform Init&apos;){
             steps{
+                dir(&apos;terraform&apos;) {
                 sh label: &apos;&apos;, script: &apos;terraform init&apos;
             }
         }
+        }
         stage(&apos;Terraform Plan&apos;){
             steps{
+                dir(&apos;terraform&apos;) {
                 sh label: &apos;&apos;, script: &apos;terraform plan&apos;
             }
         }
+        }
     }
-}</script>
+    post {
+        always {
+            cleanWs()
+        }
+    }
+}
+
+</script>
     <sandbox>true</sandbox>
   </definition>
   <triggers/>
