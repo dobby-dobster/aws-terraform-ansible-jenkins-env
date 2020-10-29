@@ -10,6 +10,7 @@ AWS services used:
 * Route 53
 * ALB
 * ACM
+* IAM
 
 Regions: us-east-1 and us-west-2
 
@@ -39,9 +40,17 @@ Next, before you can deploy this environment, you need to create an AWS S3 bucke
 
 Populate the above command with a unique name of your S3 bucket.
 
-You need to change the terraform code so it knows the name of your S3 bucket you created earlier. This can be done with following command.
+You need to change the terraform code so it knows the name of your S3 bucket you created earlier. The file that needs updating is backend.tf
 
-`sed -i 's/aws-terraform-ansible2020/<bucket name>/' backend.tf`
+```
+  backend "s3" {
+    region  = "us-east-1"
+    profile = "default"
+    key     = "terraformstatefile"
+    bucket  = "<CHANGE ME>"
+  }
+}
+```
 
 Next, create a ssh key which will be deloyed to each of the ec2 instance. You can change the location of where your ssh key file is output if you want, but you need to ensure you update instances.tf with the new location.
 
@@ -68,13 +77,12 @@ If you are happy with the output, then `terraform apply`. Type 'yes' when prompt
 
 Once the deployment has completed, a multi-region Jenkins deployment will exist - master in us-east-1 and a worker node in us-west-2.
 
-You will be able to access jenkins via https://jenkins. + your-domain
+You will be able to access jenkins via https://jenkins. + your-domain. Login credentials are admin/password
 
-Login credentials are admin/password
+Pre-populated jobs (aka projects) will also be deployed,such as "Create_Delete_S3_Bucket" which can be used to create or delete S3 buckets.
 
 ## Cleanup
 
 You can destroy the environment with `terraform destroy`.
 
 This will remove all resources apart from the S3 bucket. To destroy the S3 bucket you can use the aws cli command `aws s3 rb s3://bucket-name --force`  
-
