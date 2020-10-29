@@ -5,7 +5,7 @@ variable "profile" {
 
 variable "dns-name" {
   type    = string
-  default = "cmcloudlab596.info."
+  default = "cmcloudlab694.info."
 }
 
 variable "region-master" {

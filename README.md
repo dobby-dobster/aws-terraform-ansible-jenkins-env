@@ -1,6 +1,6 @@
 # Distributed, multi-region, jenkins deployment using Terraform and Ansible
 
-![logo](diagram.png)
+![media/logo](diagram.png)
 
 AWS services used:
 
@@ -80,6 +80,10 @@ Once the deployment has completed, a multi-region Jenkins deployment will exist 
 You will be able to access jenkins via https://jenkins. + your-domain. Login credentials are admin/password
 
 Pre-populated jobs (aka projects) will also be deployed,such as "Create_Delete_S3_Bucket" which can be used to create or delete S3 buckets.
+
+![logo](media/Lambda_Hello_World-jenkins.png)
+
+![logo](media/hello_world_python-api-screenshot.png)
 
 ## Cleanup
 

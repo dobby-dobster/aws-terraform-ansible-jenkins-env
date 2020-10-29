@@ -16,6 +16,6 @@ terraform {
     region  = "us-east-1"
     profile = "default"
     key     = "terraformstatefile"
-    bucket  = "aws-terraform-ansible11"
+    bucket  = "aws-terraform-ansible-jenkins-env"
   }
 }
