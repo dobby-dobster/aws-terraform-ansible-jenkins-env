@@ -53,7 +53,33 @@
             remote_src: yes
             src: /tmp/jenkins/jenkins
             dest: /var/lib
-             
+         
+        - name: Install terraform build
+          copy:
+            src: plugins/terraform.xml
+            dest: /var/lib/jenkins/org.jenkinsci.plugins.terraform.TerraformBuildWrapper.xml
+            
+        - name: Install terraform jenkinsplugin
+          copy:
+            src: plugins/terraform.jpi
+            dest: /var/lib/jenkins/plugins/terraform.jpi
+            
+        - name: Create directories ready for jenkins jobs
+          file:
+            path: /var/lib/jenkins/jobs/{{ item }}
+            state: directory
+          with_items:
+            - Create_Delete_S3_Bucket
+            - Lambda_Hello_World
+
+        - name: Copy over Jenkins projects to /var/lib/jenkins/jobs
+          copy:
+            src: jobs/{{ item }}.xml
+            dest: /var/lib/jenkins/jobs/{{ item }}/config.xml
+          with_items:
+            - Create_Delete_S3_Bucket
+            - Lambda_Hello_World
+   
         - name: Restore jenkins user ownership on /var/lib/jenkins
           file:
             path: /var/lib/jenkins

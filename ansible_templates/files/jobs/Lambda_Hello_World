@@ -1,0 +1,74 @@
+<?xml version='1.1' encoding='UTF-8'?>
+<flow-definition plugin="workflow-job@2.38">
+  <actions>
+    <org.jenkinsci.plugins.pipeline.modeldefinition.actions.DeclarativeJobAction plugin="pipeline-model-definition@1.6.0"/>
+    <org.jenkinsci.plugins.pipeline.modeldefinition.actions.DeclarativeJobPropertyTrackerAction plugin="pipeline-model-definition@1.6.0">
+      <jobProperties/>
+      <triggers/>
+      <parameters/>
+      <options/>
+    </org.jenkinsci.plugins.pipeline.modeldefinition.actions.DeclarativeJobPropertyTrackerAction>
+  </actions>
+  <description></description>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <hudson.plugins.jira.JiraProjectProperty plugin="jira@3.0.15"/>
+  </properties>
+  <definition class="org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition" plugin="workflow-cps@2.80">
+    <script>pipeline {
+    agent any
+    tools {
+        terraform &apos;terraform&apos;
+    }
+    stages {
+        stage(&apos;Git Clone python-hello-world-lambda&apos;){
+            
+            steps{
+                dir(&apos;python&apos;) {
+                git branch: &apos;main&apos;, changelog: false, poll: false, url: &apos;https://github.com/dobby-dobster/python-hello-world-lambda.git&apos;
+            }
+        }
+        }
+        
+        stage(&apos;Git Clone aws-terraform-lambda&apos;){
+            
+            steps{
+                dir(&apos;terraform&apos;) {
+                git branch: &apos;main&apos;, changelog: false, poll: false, url: &apos;https://github.com/dobby-dobster/aws-terraform-lambda.git&apos;
+            }
+        }
+        }
+        stage(&apos;Generate Zip&apos;){
+            steps{
+                zip zipFile: &apos;lambda_function_payload.zip&apos;, dir: &apos;python/&apos;, archive: true
+                sh label: &apos;&apos;, script: &apos;mv lambda_function_payload terraform/&apos;
+            }
+        }
+        stage(&apos;Terraform Init&apos;){
+            steps{
+                dir(&apos;terraform&apos;) {
+                sh label: &apos;&apos;, script: &apos;terraform init&apos;
+            }
+        }
+        }
+        stage(&apos;Terraform Apply&apos;){
+            steps{
+                dir(&apos;terraform&apos;) {
+                sh label: &apos;&apos;, script: &apos;terraform apply -auto-approve&apos;
+            }
+        }
+        }
+    }
+    post {
+        always {
+            cleanWs()
+        }
+    }
+}
+
+</script>
+    <sandbox>true</sandbox>
+  </definition>
+  <triggers/>
+  <disabled>false</disabled>
+</flow-definition>
